@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krund.hotel.manage.dao.RoomDao">
+  <resultMap id="BaseResultMap" type="com.krund.hotel.manage.entity.Room">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="m_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="hotel_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="roomtype_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="floor" javaType="java.lang.Byte" jdbcType="TINYINT" />
+      <arg column="roomno" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="lockno" javaType="java.lang.String" jdbcType="CHAR" />
+      <arg column="status" javaType="java.lang.Byte" jdbcType="TINYINT" />
+      <arg column="date_lock" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="date_create" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, m_id, hotel_id, roomtype_id, floor, roomno, lockno, status, date_lock, date_create
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from room
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from room
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.krund.hotel.manage.entity.Room">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into room (m_id, hotel_id, roomtype_id, 
+      floor, roomno, lockno, status, 
+      date_lock)
+    values (#{mId,jdbcType=INTEGER}, #{hotelId,jdbcType=INTEGER}, #{roomtypeId,jdbcType=INTEGER}, 
+      #{floor,jdbcType=TINYINT}, #{roomno,jdbcType=CHAR}, #{lockno,jdbcType=CHAR}, #{status,jdbcType=TINYINT}, 
+      #{dateLock,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.krund.hotel.manage.entity.Room">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into room
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        m_id,
+      </if>
+      <if test="hotelId != null">
+        hotel_id,
+      </if>
+      <if test="roomtypeId != null">
+        roomtype_id,
+      </if>
+      <if test="floor != null">
+        floor,
+      </if>
+      <if test="roomno != null">
+        roomno,
+      </if>
+      <if test="lockno != null">
+        lockno,
+      </if>
+      <if test="status != null">
+        status,
+      </if>
+      <if test="dateLock != null">
+        date_lock,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        #{mId,jdbcType=INTEGER},
+      </if>
+      <if test="hotelId != null">
+        #{hotelId,jdbcType=INTEGER},
+      </if>
+      <if test="roomtypeId != null">
+        #{roomtypeId,jdbcType=INTEGER},
+      </if>
+      <if test="floor != null">
+        #{floor,jdbcType=TINYINT},
+      </if>
+      <if test="roomno != null">
+        #{roomno,jdbcType=CHAR},
+      </if>
+      <if test="lockno != null">
+        #{lockno,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="dateLock != null">
+        #{dateLock,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.krund.hotel.manage.entity.Room">
+    update room
+    <set>
+      <if test="mId != null">
+        m_id = #{mId,jdbcType=INTEGER},
+      </if>
+      <if test="hotelId != null">
+        hotel_id = #{hotelId,jdbcType=INTEGER},
+      </if>
+      <if test="roomtypeId != null">
+        roomtype_id = #{roomtypeId,jdbcType=INTEGER},
+      </if>
+      <if test="floor != null">
+        floor = #{floor,jdbcType=TINYINT},
+      </if>
+      <if test="roomno != null">
+        roomno = #{roomno,jdbcType=CHAR},
+      </if>
+      <if test="lockno != null">
+        lockno = #{lockno,jdbcType=CHAR},
+      </if>
+      <if test="status != null">
+        status = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="dateLock != null">
+        date_lock = #{dateLock,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.krund.hotel.manage.entity.Room">
+    update room
+    set m_id = #{mId,jdbcType=INTEGER},
+      hotel_id = #{hotelId,jdbcType=INTEGER},
+      roomtype_id = #{roomtypeId,jdbcType=INTEGER},
+      floor = #{floor,jdbcType=TINYINT},
+      roomno = #{roomno,jdbcType=CHAR},
+      lockno = #{lockno,jdbcType=CHAR},
+      status = #{status,jdbcType=TINYINT},
+      date_lock = #{dateLock,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getAll" resultType="com.krund.hotel.manage.entity.Room">
+    select
+      r.id, 
+      r.m_id, 
+      r.hotel_id, 
+      r.roomtype_id, 
+      r.floor, 
+      r.roomno, 
+      r.lockno, 
+      r.status, 
+      r.date_lock, 
+      r.date_create,
+      t.name roomtype_name
+    from room r left join roomtype t on r.roomtype_id = t.id
+    <where>
+      <if test="hId != null">
+        r.hotel_id = #{hId}
+      </if>
+      <if test="status == 1">
+        and  (status = 1 or (status = 10 and (isnull(date_lock) or date_lock <![CDATA[<]]> now())))
+      </if>
+      <if test="status != null and status != 1">
+        and status = #{status}
+      </if>
+      <if test="status == 10">
+        and  r.date_lock > now()
+      </if>
+      <if test="tId != null">
+        and r.roomtype_id = #{tId}
+      </if>
+      <if test="roomno != null and roomno != ''">
+        and r.roomno = #{roomno}
+      </if>
+    </where>
+  </select>
+
+  <update id="lockRoom">
+    update room set status = 10, date_lock = #{date} where id = #{id} and (isnull(date_lock) or date_lock <![CDATA[<]]> now())
+  </update>
+
+  <update id="unLockRoom" parameterType="java.lang.Integer">
+    update room set status = 1, date_lock = now() where id = #{id} and status = 10
+  </update>
+
+  <select id="getUsableByTid" parameterType="java.lang.Integer" resultType="com.krund.hotel.manage.entity.Room">
+    select
+      r.id,
+      r.m_id,
+      r.hotel_id,
+      r.roomtype_id,
+      r.floor,
+      r.roomno,
+      r.lockno,
+      r.status,
+      r.date_lock,
+      r.date_create,
+      t.name roomtype_name
+    from room r left join roomtype t on r.roomtype_id = t.id
+    where (r.status = 1 or (r.status = 10 and (isnull(r.date_lock) or r.date_lock <![CDATA[<]]> now()))) and r.roomtype_id = #{tId}
+  </select>
+
+  <select id="getCountByHidAndRoomno" resultType="java.lang.Long">
+    select
+    count(*)
+    from room
+    where hotel_id = #{hId} and roomno = #{roomno}
+  </select>
+
+  <select id="getUsableCountByTid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select
+    count(*)
+    from room
+    where (status = 1 or (status = 10 and (isnull(date_lock) or date_lock <![CDATA[<]]> now()))) and roomtype_id = #{tId}
+  </select>
+
+  <select id="getRoomStatus" parameterType="com.krund.hotel.manage.entity.Room" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List" /> from room where m_id = #{mId} and hotel_id = #{hotelId} and roomno = #{roomno}
+  </select>
+</mapper>
