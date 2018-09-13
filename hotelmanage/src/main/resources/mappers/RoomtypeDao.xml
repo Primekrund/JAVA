@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.krund.hotel.manage.dao.RoomtypeDao">
+  <resultMap id="BaseResultMap" type="com.krund.hotel.manage.entity.Roomtype">
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="m_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="hotel_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="hour_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="longterm_price" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="deposit" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <arg column="date_create" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, m_id, hotel_id, `name`, price, longterm_price, deposit, hour_price, date_create
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultType="com.krund.hotel.manage.entity.Roomtype">
+    select 
+    <include refid="Base_Column_List" />
+    from roomtype
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from roomtype
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.krund.hotel.manage.entity.Roomtype">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into roomtype (m_id, hotel_id, `name`,
+      price, longterm_price, hour_price, deposit)
+    values (#{mId,jdbcType=INTEGER}, #{hotelId,jdbcType=INTEGER}, #{name,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{longtermPrice,jdbcType=DECIMAL}, #{hourPrice,jdbcType=DECIMAL}, #{deposit,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" parameterType="com.krund.hotel.manage.entity.Roomtype">
+    <selectKey keyProperty="id" order="AFTER" resultType="java.lang.Integer">
+      SELECT LAST_INSERT_ID()
+    </selectKey>
+    insert into roomtype
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        m_id,
+      </if>
+      <if test="hotelId != null">
+        hotel_id,
+      </if>
+      <if test="name != null">
+        `name`,
+      </if>
+      <if test="price != null">
+        price,
+      </if>
+      <if test="longtermPrice != null">
+        longterm_price,
+      </if>
+      <if test="hourPrice != null">
+        hour_price,
+      </if>
+      <if test="deposit != null">
+        deposit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mId != null">
+        #{mId,jdbcType=INTEGER},
+      </if>
+      <if test="hotelId != null">
+        #{hotelId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="longtermPrice != null">
+        #{longtermPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="hourPrice != null">
+        #{hourPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="deposit != null">
+        #{deposit,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.krund.hotel.manage.entity.Roomtype">
+    update roomtype
+    <set>
+      <if test="mId != null">
+        m_id = #{mId,jdbcType=INTEGER},
+      </if>
+      <if test="hotelId != null">
+        hotel_id = #{hotelId,jdbcType=INTEGER},
+      </if>
+      <if test="name != null">
+        `name` = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null">
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="longtermPrice != null">
+        longterm_price = #{longtermPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="hourPrice != null">
+        hour_price = #{hourPrice,jdbcType=DECIMAL},
+      </if>
+      <if test="deposit != null">
+        deposit = #{deposit,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.krund.hotel.manage.entity.Roomtype">
+    update roomtype
+    set m_id = #{mId,jdbcType=INTEGER},
+      hotel_id = #{hotelId,jdbcType=INTEGER},
+      `name` = #{name,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      longterm_price = #{longtermPrice,jdbcType=DECIMAL},
+      hour_price = #{hourPrice,jdbcType=DECIMAL},
+      deposit = #{deposit,jdbcType=DECIMAL}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+
+  <select id="getAllByMid" parameterType="java.lang.Integer" resultType="com.krund.hotel.manage.entity.Roomtype">
+    select
+    <include refid="Base_Column_List" />
+    from roomtype
+    where m_id = #{mId}
+  </select>
+
+  <select id="getAllByHid" parameterType="java.lang.Integer" resultType="com.krund.hotel.manage.entity.Roomtype">
+    select
+    <include refid="Base_Column_List" />
+    from roomtype
+    where hotel_id = #{hId}
+  </select>
+  
+  <select id="getCountByHidAndName" resultType="java.lang.Long">
+    select
+    count(*)
+    from roomtype where hotel_id = #{hId} and `name` = #{name}
+  </select>
+
+  <select id="getUsingCount" parameterType="java.lang.Integer" resultType="java.lang.Long">
+    select
+    count(*)
+    from room where roomtype_id = #{id}
+  </select>
+
+  <select id="getCountByHidTid" resultType="java.lang.Long">
+    select
+    count(*)
+    from roomtype where hotel_id = #{hId} and id = #{tId}
+  </select>
+</mapper>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  LOGBACK配置文件
+  http://logback.qos.ch/manual/configuration.html
+  日志的级别 (level) 由低到高排列如下：
+
+    trace
+    debug
+    info
+    warn
+    error
+    通过设置 logger 节点，可以指定特定包的 level。
+
+    除了特定包之外，项目的日志 level 均由 root 节点指定。
+
+    <logger name="com.xxx" level="TRACE"/>
+  -->
+<configuration>
+    <contextName>iHotel</contextName>
+    <!-- 输出到控制台 -->
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+    </root>
+</configuration>

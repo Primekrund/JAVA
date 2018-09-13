@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  LOGBACK配置文件
+  http://logback.qos.ch/manual/configuration.html
+  日志的级别 (level) 由低到高排列如下：
+
+    trace
+    debug
+    info
+    warn
+    error
+    通过设置 logger 节点，可以指定特定包的 level。
+
+    除了特定包之外，项目的日志 level 均由 root 节点指定。
+
+    <logger name="com.xxx" level="TRACE"/>
+  -->
+<configuration>
+	<contextName>iHotel</contextName>
+	<!-- 定义带颜色的变量 -->
+	<property name="CONSOLE_LOG_PATTERN"
+			  value="%date{yyyy-MM-dd HH:mm:ss} | %highlight(%-5level) | %boldYellow(%thread) | %boldGreen(%logger) | %msg%n"/>
+	<!-- 输出到控制台 -->
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>${CONSOLE_LOG_PATTERN}</pattern>
+		</encoder>
+	</appender>
+    <!-- 输出到文件 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${jetty.base}/logs/iHotel.log</file>
+
+		<rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+			<FileNamePattern>${jetty.base}/logs/iHotel.%i.log.zip</FileNamePattern>
+			<MinIndex>1</MinIndex>
+			<MaxIndex>5</MaxIndex>
+		</rollingPolicy>
+
+		<triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+			<MaxFileSize>5MB</MaxFileSize>
+		</triggeringPolicy>
+
+		<layout class="ch.qos.logback.classic.PatternLayout">
+			<Pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</Pattern>
+		</layout>
+	</appender>
+
+	<root level="DEBUG">
+        <appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE"/>
+	</root>
+</configuration>
