@@ -13,4 +13,7 @@ public class TokenServiceImplTest extends BaseTest {
     public void test(){
 
     }
+    public void ssd() {
+    }
+
 }
